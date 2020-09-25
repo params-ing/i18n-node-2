@@ -1,11 +1,11 @@
 {
-  "name": "i18n-2",
+  "name": "parm@i18n-2",
   "description": "lightweight simple translation module with dynamic json storage",
   "version": "0.7.3",
-  "homepage": "http://github.com/jeresig/i18n-node-2",
+  "homepage": "https://github.com/params-ing/i18n-node-2",
   "repository": {
     "type": "git",
-    "url": "http://github.com/jeresig/i18n-node-2.git"
+    "url": "https://github.com/params-ing/i18n-node-2"
   },
   "author": "John Resig <jeresig@gmail.com>",
   "main": "./index",
@@ -13,7 +13,6 @@
     "lib": "."
   },
   "dependencies": {
-    "debug": "^3.1.0",
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {

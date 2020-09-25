@@ -10,10 +10,7 @@
 // dependencies
 var vsprintf = require("sprintf-js").vsprintf,
 		fs = require("fs"),
-		path = require("path"),
-		debugLog = require('debug')('i18n-2:log'),
-    	debugWarn = require('debug')('i18n-2:warn'),
-    	debugError = require('debug')('i18n-2:err');
+		path = require("path")
 
 
 function dotNotation (obj, is, value) {
@@ -40,7 +37,7 @@ var i18n = module.exports = function (opt) {
 	var self = this;
 
 	// Put into dev or production mode
-	this.devMode = process.env.NODE_ENV !== "production";
+	this.devMode = opt.devMode || false;
 
 	// Copy over options
 	for (var prop in opt) {
@@ -71,7 +68,7 @@ var i18n = module.exports = function (opt) {
 
 	// Check the defaultLocale
 	if (!this.locales[this.defaultLocale]) {
-		debugError("Not a valid default locale.");
+		console.log("Not a valid default locale.");
 	}
 
 	if (this.request) {
@@ -192,7 +189,7 @@ i18n.prototype = {
 
 		if (!this.locales[locale]) {
 			if (this.devMode) {
-				debugWarn("Locale (" + locale + ") not found.");
+				console.log("Locale (" + locale + ") not found.");
 			}
 
 			locale = this.defaultLocale;
@@ -221,7 +218,7 @@ i18n.prototype = {
 
 		if (this.locales[locale]) {
 			if (this.devMode) {
-				debugLog("Overriding locale from query: " + locale);
+				console.log("Overriding locale from query: " + locale);
 			}
 			this.setLocale(locale);
 		}
@@ -239,7 +236,7 @@ i18n.prototype = {
 
 		if (this.locales[locale]) {
 			if (this.devMode) {
-				debugLog("Overriding locale from query: " + locale);
+				console.log("Overriding locale from query: " + locale);
 			}
 
 			this.setLocale(locale);
@@ -255,7 +252,7 @@ i18n.prototype = {
 
 		if (/^([^.]+)/.test(req.headers.host) && this.locales[RegExp.$1]) {
 			if (this.devMode) {
-				debugLog("Overriding locale from host: " + RegExp.$1);
+				console.log("Overriding locale from host: " + RegExp.$1);
 			}
 
 			this.setLocale(RegExp.$1);
@@ -273,7 +270,7 @@ i18n.prototype = {
 
 		if (this.locales[locale]) {
 			if (this.devMode) {
-				debugLog("Overriding locale from cookie: " + locale);
+				console.log("Overriding locale from cookie: " + locale);
 			}
 
 			this.setLocale(locale);
@@ -287,7 +284,7 @@ i18n.prototype = {
 		var locale = process.env.LANG.split("_")[0];
 		if (this.locales[locale]) {
 			if (this.devMode) {
-				debugLog("Overriding locale from environment variable: " + locale);
+				console.log("Overriding locale from environment variable: " + locale);
 			}
 
 			this.setLocale(locale);
@@ -324,7 +321,7 @@ i18n.prototype = {
 	translate: function (locale, singular, plural) {
 		if (!locale || !this.locales[locale]) {
 			if (this.devMode) {
-				debugWarn("WARN: No locale found. Using the default (" +
+				console.log("WARN: No locale found. Using the default (" +
 						this.defaultLocale + ") as current locale");
 			}
 
@@ -363,14 +360,14 @@ i18n.prototype = {
 				try {
 					baseFilename = this.base(locale);
 				} catch (e) {
-					debugError('base function threw exception for locale %s', locale, e);
+					console.log('base function threw exception for locale %s', locale, e);
 				}
 
 				if (typeof baseFilename === "string") {
 					try {
 						base = this.parse(fs.readFileSync(this.locateFile(baseFilename)));
 					} catch (e) {
-						debugError('unable to read or parse base file %s for locale %s', baseFilename, locale, e);
+						console.log('unable to read or parse base file %s for locale %s', baseFilename, locale, e);
 					}
 				}
 			}
@@ -390,7 +387,7 @@ i18n.prototype = {
 				// putting content to locales[locale]
 				this.initLocale(locale, content);
 			} catch (e) {
-				debugError('unable to parse locales from file (maybe ' + file +
+				console.log('unable to parse locales from file (maybe ' + file +
 						' is empty or invalid ' + this.extension + '?): ', e);
 			}
 
@@ -419,7 +416,7 @@ i18n.prototype = {
 
 		} catch (e) {
 			if (this.devMode) {
-				debugLog('creating locales dir in: ' + this.directory);
+				console.log('creating locales dir in: ' + this.directory);
 			}
 
 			fs.mkdirSync(this.directory, 0o755);
@@ -441,12 +438,12 @@ i18n.prototype = {
 				fs.renameSync(tmp, target);
 
 			} else {
-				debugError('unable to write locales to file (either ' + tmp +
+				console.log('unable to write locales to file (either ' + tmp +
 						' or ' + target + ' are not writeable?): ');
 			}
 
 		} catch (e) {
-			debugError('unexpected error writing files (either ' + tmp +
+			console.log('unexpected error writing files (either ' + tmp +
 					' or ' + target + ' are not writeable?): ', e);
 		}
 	},
