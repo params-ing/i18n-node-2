@@ -1,3 +1,9 @@
+# The repository has been forked from [i18n-2](https://github.com/jeresig/i18n-node-2)
+The following changes have been done
+* Remove debug library 
+* Make dev mode configurable while creating i18n instance
+* Add options to retry a value in a default locale if not found in the current locale 
+
 # Node.js: i18n-2
 
  * Designed to work out-of-the-box with Express.js
