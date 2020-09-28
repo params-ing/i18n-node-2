@@ -61,6 +61,7 @@ var i18n = module.exports = function (opt) {
 		});
 
 		this.defaultLocale = opt.defaultLocale || opt.locales[0];
+		this.retryInDefaultLocale = opt.retryInDefaultLocale || false;
 	}
 
 	// Set the locale to the default locale
@@ -319,7 +320,8 @@ i18n.prototype = {
 
 	// read locale file, translate a msg and write to fs if new
 	translate: function (locale, singular, plural) {
-		if (!locale || !this.locales[locale]) {
+		const retryInDefaultLocale = this.retryInDefaultLocale && !this.locales[locale][singular];
+		if (!locale || !this.locales[locale] || retryInDefaultLocale) {
 			if (this.devMode) {
 				console.log("WARN: No locale found. Using the default (" +
 						this.defaultLocale + ") as current locale");
