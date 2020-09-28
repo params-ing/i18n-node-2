@@ -1,6 +1,6 @@
 {
   "name": "i18n-2-parm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fork from i18n-node 2 minus the debug module",
   "main": "index.js",
   "directories": {
